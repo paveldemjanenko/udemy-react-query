@@ -33,11 +33,11 @@ export function InfinitePeople() {
           return pageData.results.map((person) => {
             return (
               <Person
-              key={person.name}
-              name={person.name}
-              hairColor={person.hair_color}
-              eyeColor={person.eye_color}
-            />
+                key={person.name}
+                name={person.name}
+                hairColor={person.hair_color}
+                eyeColor={person.eye_color}
+              />
             );
           });
         })};

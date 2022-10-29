@@ -1,4 +1,36 @@
-import { render } from '@testing-library/react';
+/* eslint-disable no-console */
+import { render, RenderResult } from '@testing-library/react';
+import { ReactElement } from 'react';
+import { QueryClient, QueryClientProvider, setLogger } from 'react-query';
+
+import { generateQueryClient } from '../react-query/queryClient';
+
+setLogger({
+  log: console.log,
+  warn: console.warn,
+  error: () => {
+    // swallow errors without printing out
+  },
+});
+
+// make function to generate a unique query clinet for each test
+const generateTestQueryClient = () => {
+  const client = generateQueryClient();
+  const options = client.getDefaultOptions();
+  options.queries = { ...options.queries, retry: false };
+  return client;
+};
+
+export function renderWithQueryClient(
+  ui: ReactElement,
+  client?: QueryClient,
+): RenderResult {
+  const queryClient = client ?? generateTestQueryClient();
+
+  return render(
+    <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>,
+  );
+}
 
 // import { defaultQueryClientOptions } from '../react-query/queryClient';
 
